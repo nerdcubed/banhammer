@@ -11,8 +11,11 @@ RUN apk add --no-cache \
   pip install -r requirements.txt && \
   apk del build-base
 
+RUN mkdir output
+
 COPY src/ .
 COPY frames.json ./frames.json
 COPY assets/ ./assets
 COPY frames/ ./frames
+
 CMD ["python", "-u", "__main__.py"]
