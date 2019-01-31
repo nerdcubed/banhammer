@@ -104,7 +104,7 @@ class Generator:
         files = {'files[]': open(f'./output/{output}.gif', 'rb')}
         r = requests.post(self.url, files=files, headers=self.headers)
         os.remove(f'./output/{output}.gif')
-        return r.json()
+        return r.content
     
     def pubsub(self):
         """Responds to any Pub/Sub events."""
