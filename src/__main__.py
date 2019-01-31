@@ -110,17 +110,18 @@ class Generator:
         """Responds to any Pub/Sub events."""
         p = self.redis.pubsub(ignore_subscribe_messages=True)
         p.subscribe('mod.bans')
-        message = p.get_message()
-        if message:
-            if message['type'] == 'message':
-                c = message['channel'].decode('utf-8')
-                if c == 'mod.bans':
-                    d = json.loads(message['data'].decode('utf-8'))
-                    id = d['id']
-                    name = d['name']
-                    resp = self.image_gen(name)
-                    self.redis.publish(f'mod.bans.{id}', resp)
-        time.sleep(0.01)
+        while True:
+            message = p.get_message()
+            if message:
+                if message['type'] == 'message':
+                    c = message['channel'].decode('utf-8')
+                    if c == 'mod.bans':
+                        d = json.loads(message['data'].decode('utf-8'))
+                        id = d['id']
+                        name = d['name']
+                        resp = self.image_gen(name)
+                        self.redis.publish(f'mod.bans.{id}', resp)
+            time.sleep(0.01)
 
 if __name__ == "__main__":
     main = Generator()
