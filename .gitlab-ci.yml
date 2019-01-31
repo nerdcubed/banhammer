@@ -25,7 +25,7 @@ sse4:
   - docker:dind
   script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-    - docker build --pull -t $SSE4_IMAGE -f Dockerfile.sse4 .
+    - docker build --pull -t $SSE4_IMAGE -f sse4.Dockerfile .
     - docker push $SSE4_IMAGE
   only:
   - master
@@ -37,7 +37,7 @@ avx2:
   - docker:dind
   script:
     - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
-    - docker build --pull -t $AVX2_IMAGE -f Dockerfile.avx2 .
+    - docker build --pull -t $AVX2_IMAGE -f avx2.Dockerfile .
     - docker push $AVX2_IMAGE
   only:
   - master
