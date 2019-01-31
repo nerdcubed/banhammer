@@ -1,0 +1,18 @@
+FROM python:alpine3.6
+WORKDIR /app
+
+# Install Requirements
+COPY requirements.simd.txt .
+RUN CC="cc -mavx2" apk add --no-cache \
+    build-base \
+    freetype-dev \
+    zlib-dev \
+    jpeg-dev && \
+  pip install -r requirements.txt && \
+  apk del build-base
+
+COPY src/ .
+COPY frames.json ./frames.json
+COPY assets/ ./assets
+COPY frames/ ./frames
+CMD ["python", "-u", "__main__.py"]

@@ -1,0 +1,8 @@
+# Git Keep Files
+.gitkeep
+
+# Git Repo
+.git/
+
+# Python Cache
+__pycache__/

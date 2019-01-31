@@ -1,0 +1,43 @@
+stages:
+ - build
+
+variables:
+  DEFAULT_IMAGE: $CI_REGISTRY_IMAGE:latest
+  SSE4_IMAGE: $CI_REGISTRY_IMAGE/sse4:latest
+  AVX2_IMAGE: $CI_REGISTRY_IMAGE/avx2:latest
+
+default:
+  stage: build
+  image: docker:latest
+  services:
+  - docker:dind
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - docker build --pull -t $DEFAULT_IMAGE -f Dockerfile .
+    - docker push $DEFAULT_IMAGE
+  only:
+  - master
+
+sse4:
+  stage: build
+  image: docker:latest
+  services:
+  - docker:dind
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - docker build --pull -t $SSE4_IMAGE -f Dockerfile.sse4 .
+    - docker push $SSE4_IMAGE
+  only:
+  - master
+
+avx2:
+  stage: build
+  image: docker:latest
+  services:
+  - docker:dind
+  script:
+    - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - docker build --pull -t $AVX2_IMAGE -f Dockerfile.avx2 .
+    - docker push $AVX2_IMAGE
+  only:
+  - master
