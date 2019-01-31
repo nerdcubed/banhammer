@@ -58,6 +58,7 @@ class Generator:
     
     def image_gen(self, text: str):
         """Generates the GIF."""
+        text = text.upper()
         size_check = self.size_check
         while True:
             test_font = ImageFont.truetype(font='./assets/Teko-Bold.ttf', size=size_check)
