@@ -73,8 +73,6 @@ class Generator:
         d = ImageDraw.Draw(text_img)
         self.draw_outline(d, text, 3, 3, font)
 
-        black = Image.new('RGBA', text_img.size)
-        cropped = Image.composite(text_img, black, text_img)
         final_text = text_img.crop(text_img.getbbox()) 
 
         frame = 0
