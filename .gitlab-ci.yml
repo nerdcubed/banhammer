@@ -1,4 +1,5 @@
 stages:
+ - test
  - build
 
 variables:
@@ -40,4 +41,13 @@ avx2:
     - docker build --pull -t $AVX2_IMAGE -f avx2.Dockerfile .
     - docker push $AVX2_IMAGE
   only:
+  - master
+
+test:
+  stage: test
+  image: python:latest
+  script:
+  - pip install yapf
+  - yapf --style google -d -r src
+  except:
   - master
