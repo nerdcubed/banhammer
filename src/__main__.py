@@ -26,7 +26,7 @@ async def banhammer(request, input_str):
     file_name = f'./output/{hash_check}.gif'
     
     if (os.path.isfile(file_name) == False):
-    file_name = main.image_gen(cleaned)
+        file_name = main.image_gen(cleaned)
 
     resp = await file(file_name)
     cleanup.clean()
