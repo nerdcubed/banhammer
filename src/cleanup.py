@@ -1,6 +1,7 @@
 import os
 import time
 
+
 class Cleanup:
     """The somewhat automated garbage collection system"""
 

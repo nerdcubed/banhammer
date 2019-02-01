@@ -11,20 +11,23 @@ app = Sanic()
 main = Generator()
 cleanup = Cleanup()
 
+
 @app.route('/')
 async def index(request):
     return await file('index.txt')
 
+
 @app.route('/favicon.ico')
 async def favicon(request):
     return text('Not Found', status=404)
+
 
 @app.route('/api/v1.0/banhammer/<input_str>')
 async def banhammer(request, input_str):
     cleaned = unquote(input_str)
     hash_check = main.hash(cleaned.upper())
     file_name = f'./output/{hash_check}.gif'
-    
+
     if (os.path.isfile(file_name) == False):
         file_name = main.image_gen(cleaned)
 
@@ -32,6 +35,7 @@ async def banhammer(request, input_str):
     cleanup.clean()
 
     return resp
+
 
 if __name__ == '__main__':
     cores = multiprocessing.cpu_count()
