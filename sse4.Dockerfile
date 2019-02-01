@@ -1,4 +1,4 @@
-FROM python:alpine3.6
+FROM python:alpine3.7
 WORKDIR /app
 
 # Install Requirements
@@ -9,13 +9,13 @@ RUN apk add --no-cache \
     zlib-dev \
     jpeg-dev && \
   pip install -r requirements.simd.txt && \
-  apk del build-base
-
-RUN mkdir output
+  apk del build-base && \
+  mkdir output
 
 COPY src/ .
 COPY frames.json ./frames.json
 COPY assets/ ./assets
 COPY frames/ ./frames
 
+EXPOSE 8080
 CMD ["python", "-u", "__main__.py"]
