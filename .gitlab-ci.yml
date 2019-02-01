@@ -3,8 +3,8 @@ stages:
 
 variables:
   DEFAULT_IMAGE: $CI_REGISTRY_IMAGE:latest
-  SSE4_IMAGE: $CI_REGISTRY_IMAGE/sse4:latest
-  AVX2_IMAGE: $CI_REGISTRY_IMAGE/avx2:latest
+  SSE4_IMAGE: $CI_REGISTRY_IMAGE:sse4
+  AVX2_IMAGE: $CI_REGISTRY_IMAGE:avx2
 
 default:
   stage: build
