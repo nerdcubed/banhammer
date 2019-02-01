@@ -2,12 +2,14 @@ import os
 import multiprocessing
 from urllib.parse import unquote
 from generator import Generator
+from cleanup import Cleanup
 from sanic import Sanic
 from sanic.exceptions import abort
 from sanic.response import file, text
 
 app = Sanic()
 main = Generator()
+cleanup = Cleanup()
 
 @app.route('/')
 async def index(request):
@@ -27,6 +29,8 @@ async def banhammer(request, input_str):
     file_name = main.image_gen(cleaned)
 
     resp = await file(file_name)
+    cleanup.clean()
+
     return resp
 
 if __name__ == '__main__':
