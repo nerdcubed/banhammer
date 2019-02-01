@@ -1,5 +1,4 @@
 pillow-simd
 numpy
 imageio
-requests
-redis
+sanic

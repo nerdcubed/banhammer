@@ -4,22 +4,16 @@ import os
 import numpy
 import imageio
 import json
-import requests
 import uuid
-import redis
 import time
 
 class Generator:
     """HAMMER DOWN!"""
 
     def __init__(self):
-        self.url = os.environ['BAN_URL']
-        self.headers = json.loads(os.environ['HEADERS'])
-        self.redis = redis.StrictRedis(host=os.environ['REDIS_HOST'], port=6379, db=0)
         self.size_check = 10
         self.target_size = (1200, 225)
         self.frames = sorted(os.listdir('./frames/'))
-        self.form_name = os.environ['FORM_NAME']
         with open('frames.json') as f:
             j = json.load(f)
             self.metadata = {}
@@ -101,28 +95,9 @@ class Generator:
                     writer.append_data(image)
                 frame += 1
         
-        files = {'files[]': open(f'./output/{output}.gif', 'rb')}
-        r = requests.post(self.url, files=files, headers=self.headers)
-        os.remove(f'./output/{output}.gif')
-        return r.content
-    
-    def pubsub(self):
-        """Responds to any Pub/Sub events."""
-        p = self.redis.pubsub(ignore_subscribe_messages=True)
-        p.subscribe('mod.bans')
-        while True:
-            message = p.get_message()
-            if message:
-                if message['type'] == 'message':
-                    c = message['channel'].decode('utf-8')
-                    if c == 'mod.bans':
-                        d = json.loads(message['data'].decode('utf-8'))
-                        id = d['id']
-                        name = d['name']
-                        resp = self.image_gen(name)
-                        self.redis.publish(f'mod.bans.{id}', resp)
-            time.sleep(0.01)
+        return f'./output/{output}.gif'
 
 if __name__ == "__main__":
     main = Generator()
-    main.pubsub()
+    resp = main.image_gen('reee')
+    print(resp)
