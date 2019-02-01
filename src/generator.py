@@ -96,8 +96,3 @@ class Generator:
                 frame += 1
         
         return f'./output/{output}.gif'
-
-if __name__ == "__main__":
-    main = Generator()
-    resp = main.image_gen('reee')
-    print(resp)

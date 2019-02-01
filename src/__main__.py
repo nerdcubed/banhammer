@@ -1,0 +1,28 @@
+import os
+import multiprocessing
+from urllib.parse import unquote
+from generator import Generator
+from sanic import Sanic
+from sanic.exceptions import abort
+from sanic.response import file, text
+
+app = Sanic()
+main = Generator()
+
+@app.route('/favicon.ico')
+async def favicon(request):
+    return text('Not Found', status=404)
+
+@app.route('/banhammer/<input_str>')
+async def banhammer(request, input_str):
+    cleaned = unquote(input_str)
+    file_name = main.image_gen(cleaned)
+
+    resp = await file(file_name)
+    os.remove(file_name)
+
+    return resp
+
+if __name__ == '__main__':
+    cores = multiprocessing.cpu_count()
+    app.run(host='0.0.0.0', port=8080, workers=cores)
