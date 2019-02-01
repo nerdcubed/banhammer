@@ -1,0 +1,5 @@
+# Tom Scott Banhammer Generator
+Generates GIFs based on Tom Scott's Banhammer
+
+API Routes:
+GET /api/v1.0/banhammer/:name

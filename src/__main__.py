@@ -9,11 +9,15 @@ from sanic.response import file, text
 app = Sanic()
 main = Generator()
 
+@app.route('/')
+async def index(request):
+    return await file('index.txt')
+
 @app.route('/favicon.ico')
 async def favicon(request):
     return text('Not Found', status=404)
 
-@app.route('/banhammer/<input_str>')
+@app.route('/api/v1.0/banhammer/<input_str>')
 async def banhammer(request, input_str):
     cleaned = unquote(input_str)
     file_name = main.image_gen(cleaned)
