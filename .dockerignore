@@ -6,3 +6,6 @@
 
 # Python Cache
 __pycache__/
+
+# Image Output
+output/

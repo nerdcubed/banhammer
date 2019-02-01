@@ -1,10 +1,11 @@
 stages:
+ - test
  - build
 
 variables:
   DEFAULT_IMAGE: $CI_REGISTRY_IMAGE:latest
-  SSE4_IMAGE: $CI_REGISTRY_IMAGE/sse4:latest
-  AVX2_IMAGE: $CI_REGISTRY_IMAGE/avx2:latest
+  SSE4_IMAGE: $CI_REGISTRY_IMAGE:sse4
+  AVX2_IMAGE: $CI_REGISTRY_IMAGE:avx2
 
 default:
   stage: build
@@ -40,4 +41,13 @@ avx2:
     - docker build --pull -t $AVX2_IMAGE -f avx2.Dockerfile .
     - docker push $AVX2_IMAGE
   only:
+  - master
+
+test:
+  stage: test
+  image: python:latest
+  script:
+  - pip install yapf
+  - yapf --style google -d -r src
+  except:
   - master
