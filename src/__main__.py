@@ -20,11 +20,13 @@ async def favicon(request):
 @app.route('/api/v1.0/banhammer/<input_str>')
 async def banhammer(request, input_str):
     cleaned = unquote(input_str)
+    hash_check = main.hash(cleaned.upper())
+    file_name = f'./output/{hash_check}.gif'
+    
+    if (os.path.isfile(file_name) == False):
     file_name = main.image_gen(cleaned)
 
     resp = await file(file_name)
-    os.remove(file_name)
-
     return resp
 
 if __name__ == '__main__':

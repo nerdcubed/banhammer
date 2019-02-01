@@ -4,7 +4,7 @@ import os
 import numpy
 import imageio
 import json
-import uuid
+import hashlib
 import time
 
 class Generator:
@@ -49,6 +49,11 @@ class Generator:
         draw_obj.text((x-3, y+3), text,(159,115,110,255),font=font)
         draw_obj.text((x, y), text, (255,153,126,255), font=font)
         return
+
+    def hash(self, string: str):
+        m = hashlib.md5()
+        m.update(string.encode('utf-8'))
+        return m.hexdigest()
     
     def image_gen(self, text: str):
         """Generates the GIF."""
@@ -73,7 +78,7 @@ class Generator:
         final_text = text_img.crop(text_img.getbbox()) 
 
         frame = 0
-        output = str(uuid.uuid4().hex)
+        output = self.hash(text)
         with imageio.get_writer(f'./output/{output}.gif', mode='I', duration=0.04) as writer:
             for filename in self.frames:
                 path = f'./frames/{filename}'
