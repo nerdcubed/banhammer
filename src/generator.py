@@ -62,7 +62,7 @@ class Generator:
         size_check = self.size_check
         while True:
             test_font = ImageFont.truetype(
-                font='./assets/Teko-Bold.ttf', size=size_check)
+                font='./assets/Bungee-Regular.ttf', size=size_check)
             font_size = test_font.getsize(text)
             if font_size[0] > self.target_size[0] or font_size[
                     1] > self.target_size[1]:
