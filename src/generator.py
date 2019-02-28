@@ -35,6 +35,15 @@ class Generator:
         res = numpy.dot(numpy.linalg.inv(A.T * A) * A.T, B)
         return numpy.array(res).reshape(8)
 
+    def get_anchor_points(self, size: tuple):
+        x_middle = size[0] / 2
+        x_left = x_middle - 600
+        x_right = x_middle + 600
+        coords = [(x_left, 0), (x_right, 0), (x_right, size[1]),
+                  (x_left, size[1])]
+        print(coords)
+        return coords
+
     def multiply_coords(self, coords):
         """Used for antialiasing text."""
         new = []
@@ -59,24 +68,17 @@ class Generator:
     def image_gen(self, text: str):
         """Generates the GIF."""
         text = text.upper()
-        size_check = self.size_check
-        while True:
-            test_font = ImageFont.truetype(
-                font='./assets/Bungee-Regular.ttf', size=size_check)
-            font_size = test_font.getsize(text)
-            if font_size[0] > self.target_size[0] or font_size[
-                    1] > self.target_size[1]:
-                break
-            else:
-                font = test_font
-                size_check += self.size_check
+        font = ImageFont.truetype(font='./assets/Bungee-Regular.ttf', size=200)
 
-        text_img = Image.new('RGBA', self.target_size, (0, 0, 0, 0))
+        font_size = font.getsize(text)
+
+        text_img = Image.new('RGBA', font_size, (0, 0, 0, 0))
 
         d = ImageDraw.Draw(text_img)
         self.draw_outline(d, text, 3, 3, font)
 
         final_text = text_img.crop(text_img.getbbox())
+        points = self.get_anchor_points(final_text.size)
 
         frame = 0
         output = self.hash(text)
@@ -87,10 +89,8 @@ class Generator:
                 coords = self.metadata.get(str(frame + 1), {})
                 if coords:
                     f = Image.open(path).convert('RGBA')
-                    coeffs = self.find_coeffs(
-                        [(0, 0), (final_text.size[0], 0),
-                         (final_text.size[0], final_text.size[1]),
-                         (0, final_text.size[1])], self.multiply_coords(coords))
+                    coeffs = self.find_coeffs(points,
+                                              self.multiply_coords(coords))
                     new_im = final_text
                     new_im = new_im.transform(
                         tuple(i * 2 for i in f.size), Image.PERSPECTIVE, coeffs,
