@@ -1,4 +1,5 @@
 from PIL import Image, ImageFont, ImageDraw
+from base64 import urlsafe_b64encode
 import io
 import os
 import numpy
@@ -61,9 +62,10 @@ class Generator:
         return
 
     def hash(self, string: str):
-        m = hashlib.md5()
+        m = hashlib.sha256()
         m.update(string.encode('utf-8'))
-        return m.hexdigest()
+        digest = m.digest()
+        return urlsafe_b64encode(digest).decode('utf-8')
 
     def image_gen(self, text: str):
         """Generates the GIF."""
