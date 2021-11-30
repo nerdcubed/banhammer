@@ -49,7 +49,7 @@ jobs:
         with:
           file: ./${{ matrix.image }}.Dockerfile
           context: .
-          push: ${{ (github.ref == 'refs/heads/master') || (contains(github.ref, 'refs/tags/') == true) }}
+          push: ${{ (github.ref == 'refs/heads/main') || (contains(github.ref, 'refs/tags/') == true) }}
           tags: |
             ${{ steps.prepare.outputs.docker_image }}:${{ matrix.image }}
             ${{ steps.prepare.outputs.docker_image }}:${{ matrix.image }}-${{ steps.prepare.outputs.version }}
