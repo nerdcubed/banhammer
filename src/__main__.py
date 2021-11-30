@@ -12,17 +12,7 @@ main = Generator()
 cleanup = Cleanup()
 
 
-@app.route('/')
-async def index(request):
-    return await file('index.txt')
-
-
-@app.route('/favicon.ico')
-async def favicon(request):
-    return text('Not Found', status=404)
-
-
-@app.route('/api/v1.0/banhammer/<input_str>')
+@app.route('/<input_str>')
 async def banhammer(request, input_str):
     cleaned = unquote(input_str)
     hash_check = main.hash(cleaned.upper())
