@@ -1,25 +1,38 @@
+import hashlib
 import os
 import multiprocessing
+from banhammer import Generator
+from base64 import urlsafe_b64encode
 from urllib.parse import unquote
-from generator import Generator
 from cleanup import Cleanup
 from sanic import Sanic
 from sanic.exceptions import abort
 from sanic.response import file, text
 
 app = Sanic(name='banhammer')
-main = Generator()
 cleanup = Cleanup()
+main = Generator()
 
+def hash(string: str):
+    m = hashlib.sha256()
+    m.update(string.encode('utf-8'))
+    digest = m.digest()
+    return urlsafe_b64encode(digest).decode('utf-8')
 
 @app.route('/<input_str>')
 async def banhammer(request, input_str):
     cleaned = unquote(input_str)
-    hash_check = main.hash(cleaned.upper())
+    hash_check = hash(cleaned.upper())
     file_name = f'./output/{hash_check}.gif'
 
     if (os.path.isfile(file_name) == False):
-        file_name = main.image_gen(cleaned)
+        buf = main.image_gen(cleaned)
+
+        if not os.path.exists('./output'):
+            os.makedirs('./output')
+
+        with open(file_name, 'wb') as f:
+            f.write(buf.getbuffer())
 
     resp = await file(file_name)
     cleanup.clean()

@@ -9,13 +9,9 @@ RUN apk add --no-cache \
     zlib-dev \
     jpeg-dev && \
   pip install -r requirements.simd.txt && \
-  apk del build-base && \
-  mkdir output
+  apk del build-base
 
 COPY src/ .
-COPY frames.json ./frames.json
-COPY assets/ ./assets
-COPY frames/ ./frames
 
 ARG GIT_REPO
 LABEL org.opencontainers.image.source=${GIT_REPO}
