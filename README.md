@@ -1,16 +1,16 @@
 # Tom Scott Banhammer Generator
-_Generates GIFs based on Tom Scott's Banhammer_
+> Generates GIFs based on Tom Scott's Banhammer
 
-![](https://i.imgur.com/l1CdgDm.gif)
+![Example Banhammer GIF](https://i.imgur.com/l1CdgDm.gif)
 
 ## Deploying
-GitLab builds this project into a Docker Image, available on the [Container Registry](https://gitlab.com/nerd3-servers/banhammer-generator/container_registry).  
+GitHub Actions builds Docker images automatically. These can be found in this repo's [Container Registry](https://github.com/nerdcubed/banhammer/pkgs/container/banhammer).
+
 There are additional images for systems that support AVX2 and SSE4 which use an alternative image processing system to speed up generation.
 
-## API Routes
-```
-GET /api/v1.0/banhammer/:name
-```
+## Usage
+Simply send a GET request to `/:text` where `:text` is the text you want displayed in the GIF.
+The resulting GIF will be returned and cached for at least 20 minutes.
 
 ## Font Licensing
 The font file included is a modified version of the Bungee Regular font. The font has been modified to include missing unicode characters and emoji provided by other fonts. The licensing and source information can be found below.
