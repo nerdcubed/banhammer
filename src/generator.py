@@ -42,7 +42,7 @@ class Generator:
         x_right = x_middle + 600
         coords = [(x_left, 0), (x_right, 0), (x_right, size[1]),
                   (x_left, size[1])]
-        print(coords)
+        # print(coords)
         return coords
 
     def multiply_coords(self, coords):
@@ -84,6 +84,10 @@ class Generator:
 
         frame = 0
         output = self.hash(text)
+
+        if not os.path.exists('./output'):
+            os.makedirs('./output')
+
         with imageio.get_writer(
                 f'./output/{output}.gif', mode='I', duration=0.04) as writer:
             for filename in self.frames:

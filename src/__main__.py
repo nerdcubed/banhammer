@@ -7,7 +7,7 @@ from sanic import Sanic
 from sanic.exceptions import abort
 from sanic.response import file, text
 
-app = Sanic()
+app = Sanic(name='banhammer')
 main = Generator()
 cleanup = Cleanup()
 
