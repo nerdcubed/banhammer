@@ -17,5 +17,8 @@ COPY frames.json ./frames.json
 COPY assets/ ./assets
 COPY frames/ ./frames
 
+ARG GIT_REPO
+LABEL org.opencontainers.image.source=${GIT_REPO}
+
 EXPOSE 8080
 CMD ["python", "-u", "__main__.py"]
